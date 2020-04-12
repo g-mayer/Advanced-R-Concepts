@@ -23,6 +23,10 @@ exercises already in this notebook, because it may interfere with our grading
 tools.
 
 What's uppppp ???
+
+HI again
+
+
 Exercise 1
 ----------
 
