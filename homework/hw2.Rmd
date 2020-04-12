@@ -1,0 +1,173 @@
+---
+title: "STAT 33B Homework 2"
+author: "Gunnar Mayer (3034535154)"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+# Display code in the knitted document.
+# DO NOT CHANGE THIS LINE!
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This assignment is due __Feb 19, 2020__ by 11:59pm.
+
+The purpose of this assignment is to practice working with data frames,
+including loading tabular data, taking subsets, and making plots.
+
+Edit this file, knit to PDF, and:
+
+* Submit the Rmd file on bCourses.
+* Submit the PDF file on Gradescope.
+
+If you think you'll need help with submission, please ask in office hours
+_before_ the assignment is due.
+
+Answer all questions with complete sentences, and put code in code chunks. You
+can make as many new code chunks as you like. Please do not delete the exercises
+already in this notebook, because it may interfere with our grading tools.
+
+
+### Working with Data
+
+1.  In lecture, you saw that the `readRDS()` function can read data stored in
+    R's built-in RDS format. Tabular data is often distributed online as
+    tab-separated value (TSV) or comma-separated value (CSV) files.
+
+    In a TSV file, each row of the data set is one one line, with entries in
+    the columns separated by tabs.
+
+    For this assignment, you'll use the Datasaurus Dozen data set, which is
+    available on the bCourse (`DatasaurusDozen.tsv`).
+
+    Read the documentation for `read.delim()` to figure out how to load the
+    Datasaurus Dozen data set into R.
+
+    Assign the data set to the `dsaur` variable.
+
+```{r}
+dsaur = read.delim(file = "DatasaurusDozen.tsv")
+```
+
+
+2.  Now that you've loaded the data set, print out summary information,
+    including:
+      + Number of columns
+      + Number of rows
+      + Classes of the columns
+      + Levels in the `dataset` column
+
+"Number of Columns"
+```{r}
+ncol(dsaur)
+```
+"Number of Rows"
+```{r}
+nrow(dsaur)
+```
+"Classes of the Columns"
+```{r}
+sapply(dsaur, class)
+```
+"Levels of the dsaur$dataset column"
+```{r}
+levels(dsaur$dataset)
+```
+
+
+3.  The Datasaurus Dozen is actually a collection of 12 data sets stacked
+    together. The `dataset` column indicates which data set each row comes
+    from.
+
+    a.  Use subsetting to extract only the rows in the `dino` data set. Assign
+        those rows to the `dino` variable.
+
+    b.  Compute the mean and standard deviation for the `x` and `y` columns in
+        the `dino` data set.
+
+    Repeat these two steps for the `star` dataset.
+
+    Based on these statistics, are the two data sets similar?
+
+```{r}
+#Dino Code
+# a.
+dino = subset(dsaur, dsaur$dataset == 'dino')
+head(dino)
+
+# b.
+"Dino x mean"
+d_x_mean = mean(dino$x)
+d_x_mean
+"Dino x standard deviation"
+d_x_sd = sd(dino$x)
+d_x_sd
+
+"Dino y mean"
+d_y_mean = mean(dino$y)
+d_y_mean
+"Dino y standard deviation"
+d_y_sd = sd(dino$y)
+d_y_sd
+
+```
+
+```{r}
+#Star Code
+# a.
+star = subset(dsaur, dsaur$dataset == 'star')
+head(star)
+
+# b.
+"Star x mean"
+s_x_mean = mean(star$x)
+s_x_mean
+"Star x standard deviation"
+s_x_sd = sd(star$x)
+s_x_sd
+
+"Star y mean"
+s_y_mean = mean(star$y)
+s_y_mean
+"Star y standard deviation"
+s_y_sd = sd(star$y)
+s_y_sd
+
+```
+
+_Your written answer goes here: Based on these statistics, are the two data sets similar?_ 
+
+Yes the data sets are similar. Based on the means and standard deviations found above it appears that the star and dino data sets are very similar.
+
+_~~~~~~~~~~~~~_
+
+4. Use `ggplot2` to make a scatter plot of `x` versus `y` for the `dino` data
+   set. Make sure your plot includes a title.
+
+   Repeat for the `star` data set.
+
+   Based on these plots, are the two data sets similar?
+
+```{r}
+# Dino Code
+library(ggplot2)
+ggplot(data = dino, aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Dino Plot")
+```
+
+```{r}
+ggplot(data = star, aes(x = x, y = y)) +
+  geom_point() +
+  labs(title = "Star Plot")
+
+```
+
+_Your written answer goes here: Based on these plots, are the two data sets similar?_
+
+
+No, after visually inspecting the scatter plots of the 'dino' and 'star' data sets it is apparent that they are not similar. However, they both share the fact that they look cool.
+
+
+
+

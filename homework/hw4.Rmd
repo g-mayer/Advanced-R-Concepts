@@ -1,0 +1,222 @@
+---
+title: "STAT 33B Homework 4"
+author: "Gunnar Mayer (3034535154)"
+output: pdf_document
+---
+
+This assignment is due __March 20, 2020__ by 11:59pm.
+
+The purpose of this assignment is to practice writing functions, if-statements,
+and loops.
+
+Edit this file, knit to PDF, and:
+
+* Submit the Rmd file on bCourses.
+* Submit the PDF file on Gradescope.
+
+If you think you'll need help with submission, please ask in office hours
+_before_ the assignment is due.
+
+Answer all questions with complete sentences, and put code in code chunks. You
+can make as many new code chunks as you like. Please do not delete the
+exercises already in this notebook, because it may interfere with our grading
+tools.
+
+
+Rejection Sampling
+==================
+
+Many scientific simulations depend on being able to randomly sample values that
+follow a particular distribution.
+
+For example, the heights of adult women in the United States approximately
+follow a normal distribution (a "bell curve") with center (mean) at 65 inches
+and spread (standard deviation) 3.5 inches. Here's the code to plot that
+distribution:
+```{r, dnorm}
+curve(dnorm(x, 65, 3.5), 50, 80, xlab = "Height (in)",
+  ylab = "Probability Density")
+```
+Heights where the probability density is higher are more likely in a random
+sample of women's heights.
+
+In R, we can randomly sample values from a normal distribution with the
+`rnorm()` function. The code to sample 10 values from the noraml distribution
+with mean 65 and standard deviation 3.5 is:
+```{r, rnorm}
+rnorm(10, 65, 3.5)
+```
+R provides functions to sample from a variety of well-known distributions. The
+names of these functions usually begin with `r` for "random". For instance,
+`rbinom()` samples from a binomial distribution, and `runif()` samples from a
+(continuous) uniform distribution.
+
+What if we want to sample from a distribution that's not well-known?
+
+For example, suppose we want to sample from the distribution on -1 to 1 shown
+in the plot produced by this code:
+```{r, dslide}
+dslide = function(x) {
+  ifelse(x > 1, 0,
+    ifelse(x > 0, dnorm(x) / dnorm(0), dunif(x, -1, 0))
+  )
+}
+
+curve(dslide, -2, 2, xlab = "Value", ylab = "Density (unscaled)")
+```
+The distribution is flat (uniform) between -1 and 0, then smoothly curves down
+between 0 and 1. In other words, values closer to 1 are less likely than values
+between -1 and 0. We'll call this distribution the "slide" distribution, since
+it resembles the silhoutte of a playground slide.
+
+We can sample from distributions that are not well-known by using a statistical
+technique called rejection sampling. The idea is to choose a shape that
+completely encloses the density curve for the distribution, and then randomly,
+uniformly sample points within that shape. If a point falls below the density
+curve, then the point is accepted and its x-coordinate is a new sample value.
+If a point falls above the density curve, then it is rejected (and discarded).
+This produces the correct distribution because relatively more points will be
+accepted in places where the density curve is taller.
+
+It's convenient to make the enclosing shape a rectangle, because then we can
+sample x and y coordinates for points with the `runif()` function. For
+instance, for the slide distribution, we can use a rectangle with opposite
+corners (-1, 0) and (1, 1).
+
+The exact steps in rejection sampling are:
+
+1. Sample an x coordinate.
+2. Sample a y coordinate.
+3. Test whether the y value falls below the target distribution's density
+   curve. If it does, then x is a new sample value. If it does not, then x is
+   rejected.
+4. Repeat steps 1-3 until reaching the desired number of sample values.
+
+
+Exercise 1
+----------
+
+Write a rejection sampler for the slide distribution. You can use the
+`dslide()` function provided above to compute the height of the distribution's
+density curve at a given x-coordinate.
+
+```{r, exercise1}
+# Your code goes here.
+x = runif(1, -1, 1)
+y = runif(1, 0, 1)
+
+if (y < dslide(x)) {
+  x
+}
+
+```
+
+
+Exercise 2
+----------
+
+Turn your rejection sampler from Exercise 1 into a function called `rslide()`.
+Your function should return the final sampled values, and should have a
+parameter `n` that controls the number of values to sample.
+
+```{r, exercise2}
+# Your code goes here.
+rslide = function(n){
+  samp = 1:n
+  i = 1
+  while (i <= n){
+    x = runif(1, -1, 1)
+    y = runif(1, 0, 1)
+    if (y < dslide(x)) {
+      samp[i] = x
+      i = i + 1
+    }
+  }
+  samp
+}
+```
+
+
+Exercise 3
+----------
+
+In R, you can use `plot(density(x))` to plot the estimated density curve for a
+given sample `x`. Sample 1 million points from the slide distribution and plot
+the estimated density.
+
+How does the shape of your estimated density curve compare to the shape of the
+actual density curve for the slide distribution (see above)?
+
+_Note: It's important for scientific results to be reproducible. You can set
+the "seed" in R's pseudorandom number generator with `set.seed()` to make sure
+anyone that runs your code will get the same result, even though the result is
+based on random sampling. You can add a call to `set.seed()` before you call
+`rslide()` here to ensure the output in your knitted PDF will be the same every
+time._
+
+```{r, exercise3}
+# Your code goes here.
+set.seed(33)
+plot(density(rslide(1000000)))
+```
+
+YOUR WRITTEN ANSWER GOES HERE:
+
+The slide shape is maintained by the density plot, however, the graph is more rounded than before. Also, the y axis only goes to 0.5 instead of 1. Finally, the x-axis only goes from -1 to 1, unlike the original graph that went from -2 to 2.
+
+
+Exercise 4
+----------
+
+Use a sample of 1 million points to estimate the mean and standard deviation of
+the slide distribution.
+
+```{r, exercise4}
+# Your code goes here.
+rs = rslide(1000000)
+rslide_mean = mean(rs)
+rslide_sd = sd(rs)
+
+rslide_mean
+rslide_sd
+```
+
+Exercise 5
+----------
+
+Create a new version of your `rslide()` function called `rslide_rejected()`.
+Instead of returning the sampled vaues, the `rslide_rejected()` function should
+keep track of and return the number of points that were rejected.
+
+What percentage of points is typically rejected for this rejection sampler? Use
+an average across multiple runs to get a more accurate estimate. The
+`replicate()` function may be helpful for calling `rslide_rejected()` multiple
+times.
+
+```{r, exerise5}
+# Your code goes here.
+rslide_rejected = function(n){
+  samp = 0
+  i = 1
+  while (i <= n){
+    x = runif(1, -1, 1)
+    y = runif(1, 0, 1)
+    if (y < dslide(x)) {
+      i = i + 1
+    } else{
+      samp = samp + 1
+    }
+  }
+  samp
+}
+
+avg_rs_rejected = mean(replicate(100, rslide_rejected(10000))) / 10000
+
+message(round(avg_rs_rejected * 100, 2), '%')
+
+```
+
+YOUR WRITTEN ANSWER GOES HERE:
+
+Between 7.5% and 8% of the points are rejected when using the rslide.
+
