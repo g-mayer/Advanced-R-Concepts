@@ -22,11 +22,6 @@ can make as many new code chunks as you like. Please do not delete the
 exercises already in this notebook, because it may interfere with our grading
 tools.
 
-What's uppppp ???
-
-HI again
-
-
 Exercise 1
 ----------
 
@@ -98,7 +93,17 @@ Fibonacci number is already in `memo`, and act accordingly._
 
 ```{r}
 # Your code goes here.
-
+make_fib = function() {
+  memo = c(1,1)
+  function(n) {
+    while(n > length(memo)){
+      message(length(memo))
+        new_fib = memo[ - 2] + memo[n - 1]
+        memo = append(memo, new_fib)
+    }
+    memo[n]
+  }
+}
 ```
 
 
