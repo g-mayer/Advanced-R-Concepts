@@ -1,6 +1,6 @@
 ---
 title: "STAT 33B Homework 5"
-author: "YOUR NAME (YOUR SID)"
+author: "Gunnar Mayer (3034535154)"
 output: pdf_document
 ---
 
