@@ -35,7 +35,7 @@ Because each number in the Fibonacci sequence is the sum of the previous two
 numbers, it is especially easy to compute the sequence using recursion. Here's
 a simple recursive function to compute the `n`-th Fibonacci number:
 ```{r}
-slow_fib = function(n) {
+slow_fib = function(n=20) {
   if (n < 3)
     return (1)
 
@@ -96,10 +96,11 @@ Fibonacci number is already in `memo`, and act accordingly._
 make_fib = function() {
   memo = c(1,1)
   function(n) {
-    while(n > length(memo)){
-      message(length(memo))
-        new_fib = memo[ - 2] + memo[n - 1]
-        memo = append(memo, new_fib)
+    i = 2
+    while(i <= n){
+      new_fib = memo[i - 2] + memo[i - 1]
+      memo <<- append(memo, new_fib)
+      i = i + 1
     }
     memo[n]
   }
@@ -121,11 +122,17 @@ sentences.
 
 ```{r}
 # Your code goes here.
+#install.packages("microbenchmark")
+fib = make_fib()
+slo = microbenchmark::microbenchmark(NULL, slow_fib(), times=100L)
+fas = microbenchmark::microbenchmark(NULL, fib(20), times=100L)
+slo 
+fas
 
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+The memoized function was incredibly faster than the recursive one. The only draw back that I can see is that when memoizing a function you make an assumption about how it will always work. However, recursive functions can handle a broader set of inputs and still arrive at the correct answer.
 
 
 Exercise 3
