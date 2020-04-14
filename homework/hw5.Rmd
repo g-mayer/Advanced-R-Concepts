@@ -151,7 +151,19 @@ _Hint 1: See this week's lecture video for how to generate error messages._
 
 ```{r}
 # Your code goes here.
-
+make_fib = function() {
+  memo = c(1,1)
+  function(n) {
+    if (n < 0) stop("n must be positive (got n = ",n,")")
+    i = 2
+    while(i <= n){
+      new_fib = memo[i - 2] + memo[i - 1]
+      memo <<- append(memo, new_fib)
+      i = i + 1
+    }
+    memo[n]
+  }
+}
 ```
 
 ```{r, error = TRUE}
@@ -159,6 +171,9 @@ _Hint 1: See this week's lecture video for how to generate error messages._
 #
 # The `error = TRUE` setting tells knitr to knit despite any errors in this
 # cell.
+fib = make_fib()
+fib(10)
+fib(-1)
 
 ```
 
