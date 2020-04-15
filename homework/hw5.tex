@@ -1,0 +1,362 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={STAT 33B Homework 5},
+  pdfauthor={Gunnar Mayer (3034535154)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{STAT 33B Homework 5}
+\author{Gunnar Mayer (3034535154)}
+\date{}
+
+\begin{document}
+\maketitle
+
+This assignment is due \textbf{April 14, 2020} by 11:59pm.
+
+The purpose of this assignment is to practice using closures and
+displaying error messages.
+
+Edit this file, knit to PDF, and:
+
+\begin{itemize}
+\tightlist
+\item
+  Submit the Rmd file on bCourses.
+\item
+  Submit the PDF file on Gradescope.
+\end{itemize}
+
+If you think you'll need help with submission, please ask in office
+hours \emph{before} the assignment is due.
+
+Answer all questions with complete sentences, and put code in code
+chunks. You can make as many new code chunks as you like. Please do not
+delete the exercises already in this notebook, because it may interfere
+with our grading tools.
+
+\hypertarget{exercise-1}{%
+\subsection{Exercise 1}\label{exercise-1}}
+
+The Fibonacci sequence is formed by adding successive pairs of numbers
+together to get the next number. The first ten numbers in the sequence
+are:
+
+\begin{verbatim}
+1  1  2  3  5  8  13  21  34  55
+\end{verbatim}
+
+Because each number in the Fibonacci sequence is the sum of the previous
+two numbers, it is especially easy to compute the sequence using
+recursion. Here's a simple recursive function to compute the
+\texttt{n}-th Fibonacci number:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{slow_fib =}\StringTok{ }\ControlFlowTok{function}\NormalTok{(}\DataTypeTok{n=}\DecValTok{20}\NormalTok{) \{}
+  \ControlFlowTok{if}\NormalTok{ (n }\OperatorTok{<}\StringTok{ }\DecValTok{3}\NormalTok{)}
+    \KeywordTok{return}\NormalTok{ (}\DecValTok{1}\NormalTok{)}
+
+  \KeywordTok{Recall}\NormalTok{(n }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{Recall}\NormalTok{(n }\OperatorTok{-}\StringTok{ }\DecValTok{2}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Unfortunately, this function is quite slow for large values of n.~The
+problem is that the number of recursive computations grows exponentially
+with \texttt{n}.
+
+For instance, consider calling \texttt{slow\_fib(10)}. This results in
+two calls, to \texttt{slow\_fib(9)} and \texttt{slow\_fib(8)}. Each of
+those calls also results in two calls, for a total of four more calls.
+Each of those four calls also results in two calls, and so on. The first
+three levels of calls are:
+
+\begin{verbatim}
+slow_fib(9) + slow_fib(8)
+
+slow_fib(8) + slow_fib(7) + slow_fib(7) + slow_fib(6)
+
+slow_fib(7) + slow_fib(6) + slow_fib(6) + slow_fib(5) +
+    slow_fib(6) + slow_fib(5) + slow_fib(5) + slow_fib(4)
+...
+\end{verbatim}
+
+As you can see, many of the calls are identical, so the function wastes
+time recomputing Fibonacci numbers it has already computed.
+
+The Fibonacci numbers can be computed recursively in a more efficient
+way by keeping a record of each number that's already been computed.
+Using the record, each number in the sequence only has to be computed
+once.
+
+This strategy of recording values that have been already computed and
+reusing them (rather than recomputing them) is called ``memoization''.
+Memoization is a useful technique for improving efficiency in many
+programming problems.
+
+Implement a memoized Fibonacci function \texttt{fib()}. Like
+\texttt{slow\_fib()}, your function should have a parameter \texttt{n}
+and should return the \texttt{n}-th Fibonacci number. However, your
+function should ``remember'' numbers that have already been computed so
+they do not have to be recomputed.
+
+Test your function by computing \texttt{fib(40)}. If your function is
+working correctly, it should be able to compute this number in less than
+5 seconds, and the number should be \texttt{102334155}.
+
+\emph{Hint 1: To get started, you need to create a factory function that
+will provide the environment for the closure. The factory function
+should not have any parameters, and should return your recursive
+Fibonacci function.}
+
+\emph{Hint 2: Use a variable called \texttt{memo} local to the factory
+function (not the Fibonacci function) to store the computed Fibonacci
+values. The variable can be a vector or list. Initialize the variable
+with 1 at positions 1 and 2; these are the first two Fibonacci numbers.}
+
+\emph{Hint 3: Your Fibonacci function will need to test whether the
+requested Fibonacci number is already in \texttt{memo}, and act
+accordingly.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Your code goes here.}
+\NormalTok{make_fib =}\StringTok{ }\ControlFlowTok{function}\NormalTok{() \{}
+\NormalTok{  memo =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+  \ControlFlowTok{function}\NormalTok{(n) \{}
+\NormalTok{    i =}\StringTok{ }\DecValTok{2}
+    \ControlFlowTok{while}\NormalTok{(i }\OperatorTok{<=}\StringTok{ }\NormalTok{n)\{}
+\NormalTok{      new_fib =}\StringTok{ }\NormalTok{memo[i }\OperatorTok{-}\StringTok{ }\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{memo[i }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{]}
+\NormalTok{      memo <<-}\StringTok{ }\KeywordTok{append}\NormalTok{(memo, new_fib)}
+\NormalTok{      i =}\StringTok{ }\NormalTok{i }\OperatorTok{+}\StringTok{ }\DecValTok{1}
+\NormalTok{    \}}
+\NormalTok{    memo[n]}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{exercise-2}{%
+\subsection{Exercise 2}\label{exercise-2}}
+
+Use the microbenchmark package's \texttt{microbenchmark()} function to
+compare the speed of \texttt{slow\_fib()} and \texttt{fib()}. Benchmark
+how long it takes each function to compute the 20th Fibonacci number.
+
+Memoization is a tradeoff. Although memoization increases the speed of a
+computation, can you think of any potential drawbacks? Explain in 1-3
+sentences.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Your code goes here.}
+\CommentTok{#install.packages("microbenchmark")}
+\NormalTok{fib =}\StringTok{ }\KeywordTok{make_fib}\NormalTok{()}
+\NormalTok{slo =}\StringTok{ }\NormalTok{microbenchmark}\OperatorTok{::}\KeywordTok{microbenchmark}\NormalTok{(}\OtherTok{NULL}\NormalTok{, }\KeywordTok{slow_fib}\NormalTok{(), }\DataTypeTok{times=}\NormalTok{100L)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in microbenchmark::microbenchmark(NULL, slow_fib(), times = 100L): Could
+## not measure a positive execution time for 59 evaluations.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fas =}\StringTok{ }\NormalTok{microbenchmark}\OperatorTok{::}\KeywordTok{microbenchmark}\NormalTok{(}\OtherTok{NULL}\NormalTok{, }\KeywordTok{fib}\NormalTok{(}\DecValTok{20}\NormalTok{), }\DataTypeTok{times=}\NormalTok{100L)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in microbenchmark::microbenchmark(NULL, fib(20), times = 100L): Could
+## not measure a positive execution time for 62 evaluations.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{slo }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Unit: nanoseconds
+##        expr     min      lq    mean  median      uq      max neval
+##        NULL       0       0       0       0       0        0   100
+##  slow_fib() 8338200 8904150 9696339 9177000 9741350 16258200   100
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fas}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Unit: nanoseconds
+##     expr   min    lq   mean median     uq    max neval
+##     NULL     0     0      1      0      0    100   100
+##  fib(20) 31200 45200 109086 110450 149100 228700   100
+\end{verbatim}
+
+YOUR WRITTEN ANSWER GOES HERE: The memoized function was incredibly
+faster than the recursive one. The only draw back that I can see is that
+when memoizing a function you make an assumption about how it will
+always work. However, recursive functions can handle a broader set of
+inputs and still arrive at the correct answer.
+
+\hypertarget{exercise-3}{%
+\subsection{Exercise 3}\label{exercise-3}}
+
+Make a new version of your \texttt{fib()} function that includes error
+handling. If the user supplies a non-positive \texttt{n}, the function
+should print the error message
+\texttt{"n\ must\ be\ positive\ (got\ n\ =\ N)"} where N is replaced by
+the value of \texttt{n}.
+
+Test your function for \texttt{fib(-1)} and \texttt{fib(5)} (to confirm
+that it still works for positive values).
+
+\emph{Hint 1: See this week's lecture video for how to generate error
+messages.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Your code goes here.}
+\NormalTok{make_fib =}\StringTok{ }\ControlFlowTok{function}\NormalTok{() \{}
+\NormalTok{  memo =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+  \ControlFlowTok{function}\NormalTok{(n) \{}
+    \ControlFlowTok{if}\NormalTok{ (n }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{) }\KeywordTok{stop}\NormalTok{(}\StringTok{"n must be positive (got n = "}\NormalTok{,n,}\StringTok{")"}\NormalTok{)}
+\NormalTok{    i =}\StringTok{ }\DecValTok{2}
+    \ControlFlowTok{while}\NormalTok{(i }\OperatorTok{<=}\StringTok{ }\NormalTok{n)\{}
+\NormalTok{      new_fib =}\StringTok{ }\NormalTok{memo[i }\OperatorTok{-}\StringTok{ }\DecValTok{2}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{memo[i }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{]}
+\NormalTok{      memo <<-}\StringTok{ }\KeywordTok{append}\NormalTok{(memo, new_fib)}
+\NormalTok{      i =}\StringTok{ }\NormalTok{i }\OperatorTok{+}\StringTok{ }\DecValTok{1}
+\NormalTok{    \}}
+\NormalTok{    memo[n]}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Use this cell to test.}
+\CommentTok{#}
+\CommentTok{# The `error = TRUE` setting tells knitr to knit despite any errors in this}
+\CommentTok{# cell.}
+\NormalTok{fib =}\StringTok{ }\KeywordTok{make_fib}\NormalTok{()}
+\KeywordTok{fib}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 55
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{fib}\NormalTok{(}\OperatorTok{-}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Error in fib(-1): n must be positive (got n = -1)
+\end{verbatim}
+
+\end{document}

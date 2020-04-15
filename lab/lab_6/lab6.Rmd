@@ -1,0 +1,184 @@
+---
+title: "STAT 33B Lab 6"
+author: "Nick Ulle"
+output: pdf_document
+---
+
+This assignment is due __Apr 16, 2020__ by 11:59pm.
+
+Edit this file, knit to PDF, and:
+
+* Submit the Rmd file on bCourses.
+* Submit the PDF file on Gradescope.
+
+If you think you'll need help with submission, please ask during the lab.
+
+Answer all questions with complete sentences, and put code in code chunks. You
+can make as many new code chunks as you like. Please do not delete the
+exercises already in this notebook, because it may interfere with our grading
+tools.
+
+As you work, you may find it helpful to be able to run your code. You can run a
+single line of code by pressing Ctrl + Enter. You can run an entire code chunk
+by clicking on the green arrow in the upper right corner of the code chunk. 
+
+Knit the document from time to time to make sure that your code runs without
+errors from top to bottom in a fresh R environment. 
+
+
+Debugging
+=========
+
+The purpose of this lab is to practice debugging.
+
+The function in the next section has many bugs. Some of these bugs cause errors
+which show up when trying to parse the function, while others don't show up
+until trying to run the function. There are also "silent bugs", which will not
+cause errors but will lead to incorrect results. 
+
+The Function
+------------
+
+The `tip_calculator()` function, shown below, is meant to calculate the tip and
+grand total for a restaurant bill. There are multiple ways to calculate these,
+depending on the tip rate, tax rate, and whether the tip is on the subtotal
+before or after tax. The function's parameters are:
+
+* `subtotal` - the bill before taxes are added
+* `percent_tip` - the desired percentage of the tip
+* `post_tax` - whether or not the tip should be calculated on the bill before or
+  after taxes have been added.
+* `percent_tax` - the tax rate
+
+The function is defined as:
+
+```{r, error=TRUE}
+tip_calculator = function(subtotal, percent_tip = 0.20, post_tax = TRUE,
+  percent_tax = 0.0925)
+{
+  tax = subtotal**percent_tax
+  pre_tip = subtotal
+  if(post_tax {
+    pre_tip = subtotal + tax
+  }
+  tip = pre_tip*0.0925
+  grand_total == subtotal + tax + tip
+  
+  out = c("tip" = tip "total" = grand_total)
+  
+  out
+}
+```
+
+Your task is to find and fix each bug in the `tip_calculator()` function. Do
+the debugging in rounds, with one round for each bug. After fixing a bug, start
+a new round of debugging **in a new code cell**. You must perform at least 3
+rounds of debugging, but more may be necessary to fix all of the bugs. You must
+use the `debug()` or `browser()` function for at least one round.
+
+You have not fixed all of the bugs until all of the pre-written tests at the
+end of this lab run and return `TRUE`. Note that these tests may not be
+exhaustive, so you may want to add more tests of your own.
+
+
+Round 1
+-------
+
+Describe the bug, the steps you took to find the bug, and the steps you took to
+fix the bug. Place the fixed code in the cell below.
+
+```{r,error=TRUE}
+# Your fixed code after round 1 goes here.
+
+```
+
+YOUR WRITTEN ANSWER GOES HERE:
+
+
+
+Round 2
+-------
+
+Describe the bug, the steps you took to find the bug, and the steps you took to
+fix the bug. Place the fixed code in the cell below.
+
+```{r,error=TRUE}
+# Your fixed code after round 2 goes here.
+
+```
+
+YOUR WRITTEN ANSWER GOES HERE:
+
+
+
+Round 3
+-------
+
+Describe the bug, the steps you took to find the bug, and the steps you took to
+fix the bug. Place the fixed code in the cell below.
+
+```{r,error=TRUE}
+# Your fixed code after round 3 goes here.
+
+```
+
+YOUR WRITTEN ANSWER GOES HERE:
+
+
+
+Round 4
+-------
+
+Describe the bug, the steps you took to find the bug, and the steps you took to
+fix the bug. Place the fixed code in the cell below.
+
+_Note: If you need more that 4 rounds of debugging, add them after this
+section._
+
+```{r,error=TRUE}
+# Your fixed code after round 4 goes here.
+
+```
+
+YOUR WRITTEN ANSWER GOES HERE:
+
+
+
+Test Cases
+----------
+
+Below are a few calls to `tip_calculator()`. The results are assigned to
+variables so that they can be used in further tests below.
+
+```{r, error=TRUE}
+test_a = tip_calculator(100)
+test_a
+test_b = tip_calculator(100, 0.15)
+test_b
+test_c = tip_calculator(100, 0.15, FALSE)
+test_c
+test_d = tip_calculator(100, 0.15, FALSE, 0.0725)
+test_d
+```
+
+Below are tests that check the correctness of the results from the previous
+calls.
+
+```{r, error=TRUE}
+# Confirm that the default tip is more than the 15% tip
+test_a["tip"] > test_b["tip"]
+test_a["total"] > test_b["total"]
+
+# Confirm that tipping post-tax is more than tipping pre-tax
+test_b["tip"] > test_c["tip"]
+test_b["total"] > test_c["total"]
+
+# Confirm that the default tax is more than the base California tax of 7.25%
+test_c["total"] > test_d["total"]
+
+# Confirm that the grand total minus the tip is the subtotal plus tax
+(test_a["total"] - test_a["tip"]) == 100 * 1.0925
+(test_b["total"] - test_b["tip"]) == 100 * 1.0925
+(test_c["total"] - test_c["tip"]) == 100 * 1.0925
+(test_d["total"] - test_d["tip"]) == 100 * 1.0725
+```
