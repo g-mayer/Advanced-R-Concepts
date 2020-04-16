@@ -4,6 +4,9 @@ author: "Nick Ulle"
 output: pdf_document
 ---
 
+Student: Gunnar Mayer
+SID: 3034535154
+
 This assignment is due __Apr 16, 2020__ by 11:59pm.
 
 Edit this file, knit to PDF, and:
@@ -56,16 +59,15 @@ The function is defined as:
 tip_calculator = function(subtotal, percent_tip = 0.20, post_tax = TRUE,
   percent_tax = 0.0925)
 {
-  tax = subtotal**percent_tax
+  tax = subtotal*percent_tax
   pre_tip = subtotal
-  if(post_tax {
+  if(post_tax) {
     pre_tip = subtotal + tax
   }
-  tip = pre_tip*0.0925
+  tip = pre_tip*percent_tax
   grand_total == subtotal + tax + tip
   
-  out = c("tip" = tip "total" = grand_total)
-  
+  out = c("tip" = tip, "total" = grand_total)
   out
 }
 ```
@@ -90,10 +92,12 @@ fix the bug. Place the fixed code in the cell below.
 ```{r,error=TRUE}
 # Your fixed code after round 1 goes here.
 
+tax = subtotal*percent_tax
+
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+Previously, the subtotal was being raised to the exponent of the percent_tax. I changed to be multiplied by the percent_tax.
 
 
 Round 2
@@ -104,11 +108,15 @@ fix the bug. Place the fixed code in the cell below.
 
 ```{r,error=TRUE}
 # Your fixed code after round 2 goes here.
-
+debug(tip_calculator)
+tip_calculator()
+  if(post_tax) {
+    pre_tip = subtotal + tax
+  }
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+The if statement's conditional expression was not correctly inclosed in parentheses. I fixed this by adding a ')'
 
 
 Round 3
@@ -119,11 +127,13 @@ fix the bug. Place the fixed code in the cell below.
 
 ```{r,error=TRUE}
 # Your fixed code after round 3 goes here.
-
+debug(tip_calculator)
+tip_calculator()
+tip = pre_tip*percent_tip
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+Tip was being calculated incorrectly by multiplying pre_tip by the default tax. I corrected this by multiplying the pretip times the percent tip.
 
 
 Round 4
@@ -137,11 +147,26 @@ section._
 
 ```{r,error=TRUE}
 # Your fixed code after round 4 goes here.
+debug(tip_calculator)
+tip_calculator()
 
+tip_calculator = function(subtotal, percent_tip = 0.20, post_tax = TRUE,
+  percent_tax = 0.0925)
+{
+  tax = subtotal*percent_tax
+  pre_tip = subtotal
+  if(post_tax) {
+    pre_tip = subtotal + tax
+  }
+  tip = pre_tip*percent_tip
+  grand_total = subtotal + tax + tip
+  out = c("tip" = tip, "total" = grand_total)
+  out
+}
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+There was a missing comma that was supposed to separate the arguments in 'out'. I fixed this by adding the comma after tip. Also there was an eqaulity check instead of assignment when assigning the variable grand_total
 
 
 Test Cases
@@ -182,3 +207,4 @@ test_c["total"] > test_d["total"]
 (test_c["total"] - test_c["tip"]) == 100 * 1.0925
 (test_d["total"] - test_d["tip"]) == 100 * 1.0725
 ```
+  
