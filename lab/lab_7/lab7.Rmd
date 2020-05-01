@@ -1,6 +1,6 @@
 ---
 title: "STAT 33B Lab 7"
-author: "YOUR NAME (YOUR SID)"
+author: "Gunnar Mayer (3034535154)"
 output: pdf_document
 ---
 
@@ -130,11 +130,66 @@ comment on how the performance changed.
 
 ```{r, eval=FALSE}
 # Your code to profile the original function goes here:
+library(profvis)
+
+profvis({
+  sample_markov = function(n, p = c(0.6, 0.7), init = "A") {
+  chain = init
+
+  for (i in 1:n) {
+    # Check the previous state, chain[i].
+    if (chain[i] == "A") {
+      # Get the probabilities for {A to A} and {A to B}.
+      prob = c(1 - p[1], p[1])
+      # Randomly sample new state using the probabilities.
+      x = sample(c("A", "B"), 1, prob = prob)
+      chain = c(chain, x)
+
+    } else {
+      # Get the probabilities for {B to A} and {B to B}.
+      prob = c(1 - p[2], p[2])
+      # Randomly sample new state using the probabilities.
+      x = sample(c("A", "B"), 1, prob = prob)
+      chain = c(chain, x)
+    }
+  }
+
+  chain[-1]
+}
+  sample_markov(n=35000)
+})
+
 
 ```
 
 ```{r, eval=FALSE}
 # Your edited function and the code to profile it go here:
+profvis({
+  sample_markov = function(n, p = c(0.6, 0.7), init = "A") {
+  chain = init
+  chain = character(n)
+  for (i in 1:n) {
+    # Check the previous state, chain[i].
+    if (chain[i] == "A") {
+      # Get the probabilities for {A to A} and {A to B}.
+      prob = c(1 - p[1], p[1])
+      # Randomly sample new state using the probabilities.
+      x = sample(c("A", "B"), 1, prob = prob)
+      chain[i] = x
+
+    } else {
+      # Get the probabilities for {B to A} and {B to B}.
+      prob = c(1 - p[2], p[2])
+      # Randomly sample new state using the probabilities.
+      x = sample(c("A", "B"), 1, prob = prob)
+      chain[i] = x
+    }
+  }
+
+  chain[-1]
+  }
+  sample_markov(n=35000)
+})
 
 ```
 
@@ -161,7 +216,33 @@ it takes for the function to run, and comment on how the performance changed.
 
 ```{r, eval=FALSE}
 # Your code goes here.
+profvis({
+  sample_markov = function(n, p = c(0.6, 0.7), init = 0) {
+  chain = init
+  chain = numeric(n)
 
+  for (i in 1:n) {
+    # Check the previous state, chain[i].
+    if (chain[i] == 0) {
+      # Get the probabilities for {A to A} and {A to B}.
+      prob = c(1 - p[1], p[1])
+      # Randomly sample new state using the probabilities.
+      x = sample(c(0, 1), 1, prob = prob)
+      chain[i] = x
+
+    } else {
+      # Get the probabilities for {B to A} and {B to B}.
+      prob = c(1 - p[2], p[2])
+      # Randomly sample new state using the probabilities.
+      x = sample(c(0, 1), 1, prob = prob)
+      chain[i] = x
+    }
+  }
+
+  chain[-1]
+  }
+  sample_markov(n=35000)
+})
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
@@ -197,7 +278,29 @@ changed.
 
 ```{r, eval=FALSE}
 # Your code goes here.
+profvis({
+  sample_markov = function(n, p = c(0.6, 0.7), init = 0) {
+  chain = init
+  chain = numeric(n)
 
+  for (i in 1:n) {
+    # Check the previous state, chain[i].
+    if (chain[i] == 0) {
+      # Get the probabilities for {A to A} and {A to B}.
+      prob = c(1 - p[1], p[1])
+      # Randomly sample new state using the probabilities.
+      x =
+      chain[i] = rbinom(n=1, size=1, prob = p[1])
+
+    } else {
+      chain[i] = rbinom(n=1, size=1, prob = p[2])
+    }
+  }
+
+  chain[-1]
+  }
+  sample_markov(n=35000)
+})
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
