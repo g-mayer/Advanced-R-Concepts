@@ -82,6 +82,8 @@ The parameters of the function are:
 
 The function is defined as:
 ```{r, eval=FALSE}
+library(profvis)
+
 sample_markov = function(n, p = c(0.6, 0.7), init = "A") {
   chain = init
 
@@ -130,7 +132,6 @@ comment on how the performance changed.
 
 ```{r, eval=FALSE}
 # Your code to profile the original function goes here:
-library(profvis)
 
 profvis({
   sample_markov = function(n, p = c(0.6, 0.7), init = "A") {
@@ -194,7 +195,7 @@ profvis({
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+By preallocating the character vector the run time went from 3330ms to 230ms. This was drastic increase in effiency.
 
 
 
@@ -246,7 +247,7 @@ profvis({
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+By changing to a numeric vector run time was further decreased to 180ms. It wasn't as drastic as a difference as preallocation, however, that is around a 30% decrease in run time.
 
 
 
@@ -286,10 +287,7 @@ profvis({
   for (i in 1:n) {
     # Check the previous state, chain[i].
     if (chain[i] == 0) {
-      # Get the probabilities for {A to A} and {A to B}.
-      prob = c(1 - p[1], p[1])
       # Randomly sample new state using the probabilities.
-      x =
       chain[i] = rbinom(n=1, size=1, prob = p[1])
 
     } else {
@@ -304,7 +302,7 @@ profvis({
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+By changing to rbinom the run time decreased even more to 90ms. Exactly half of the the previous time using the sample()  method.
 
 
 Round 4
@@ -357,8 +355,25 @@ compares to the version at the beginning of the lab.
 
 ```{r, eval=FALSE}
 # Your code goes here.
+profvis({
+  sample_markov = function(n, p = c(0.6, 0.7), init = 0) {
+  chain = init
+  chain = numeric(n)
+  chain = runif(chain)
+  chain = as.integer(chain < p[1])
+  for (i in 1:n) {
+    # Check the previous state, chain[i].
+    if (chain[i] == 1) {
+      # Randomly sample new state using the probabilities.
+      chain[i+1] = rbinom(n=1, size=1, prob = p[2])
+    }
+  }
 
+  chain[-1]
+  }
+  sample_markov(n=35000)
+})
 ```
 
 YOUR WRITTEN ANSWER GOES HERE:
-
+My runtime decreased to 70ms by using runif and vector operations. This is slightly better than using rbinom but when comparing this new function to the unaltered initial sample_markov function is amazing. The time difference is 3260 ms between the two. 
