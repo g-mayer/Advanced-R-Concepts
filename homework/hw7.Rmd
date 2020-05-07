@@ -1,7 +1,10 @@
 ---
 title: "STAT 33B Homework 7"
 author: "Gunnar Mayer (3034515354)"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 This assignment is due __May 6, 2020__ by 11:59pm.
@@ -65,7 +68,7 @@ num_laundry = summarise(filter(alameda_data, laundry == "in-unit"), n = n())
 num_laundry
 
 total_size = between(ba_data$sqft, 800, 1000)
-price_filter = summarize(filter(ba_data, sizes, price <2200), n=n())
+price_filter = summarize(filter(ba_data, total_size, price <2200), n=n())
 price_filter
 total_size_sum = sum(total_size, na.rm = TRUE)
 total_size_sum
