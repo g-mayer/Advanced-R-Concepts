@@ -1,0 +1,163 @@
+---
+title: "STAT 33B Homework 7"
+author: "Gunnar Mayer (3034515354)"
+output: pdf_document
+---
+
+This assignment is due __May 6, 2020__ by 11:59pm.
+
+Edit this file, knit to PDF, and:
+
+* Submit the Rmd file on bCourses.
+* Submit the PDF file on Gradescope.
+
+If you think you'll need help with submission, please ask in office hours
+_before_ the assignment is due.
+
+Answer all questions with complete sentences, and put code in code chunks. You
+can make as many new code chunks as you like. Please do not delete the
+exercises already in this notebook, because it may interfere with our grading
+tools.
+
+
+Return of the Bay Area Apartments Dataset
+=========================================
+
+The exercises in this assignment reuse the the Bay Area Apartments Data Set.
+
+Please make sure to download the **new version** of the the data set from the
+bCourse for this assignment.
+
+You can find a full description of the data set in Lab 3.
+
+
+
+Exercise 0
+----------
+
+Put all of your calls to `library()` here:
+```{r, exercise0}
+# Your code goes here.
+library("dplyr")
+```
+
+
+
+Exercise 1
+----------
+
+Use dplyr to compute subsets and answer the following:
+
+1. How many apartments are listed in Alameda?
+2. How many of those apartments in Alameda have in-unit laundry?
+3. What proportion of apartments between 800 and 1000 square feet (inclusive)
+   have a rent price below 2200 dollars?
+
+```{r, exercise1}
+# Your code goes here.
+ba_data = readRDS("apartments.rds")
+alameda_data = filter(ba_data, county == "Alameda")
+
+num_apart = summarise(alameda_data,n = n())
+num_apart
+
+num_laundry = summarise(filter(alameda_data, laundry == "in-unit"), n = n())
+num_laundry
+
+total_size = between(ba_data$sqft, 800, 1000)
+price_filter = summarize(filter(ba_data, sizes, price <2200), n=n())
+price_filter
+total_size_sum = sum(total_size, na.rm = TRUE)
+total_size_sum
+ans = price_filter / total_size
+ans
+
+```
+
+YOUR WRITTEN ANSWERS GO HERE:
+
+1. There are 2321 apartments in Alameda county
+2. There are 863 apartments with in-unit laundry in Alameda county
+3.Less than 33% of the apartments in the Bay Area that are between 800 and 100 sqft are less than $2200. The proportion specifcally is 431 / 1312
+
+
+
+Exercise 2
+----------
+
+Use dplyr's `count()` function to compute a data frame that shows the number of
+bedrooms versus the number of bathrooms for all apartments in Oakland and San
+Francisco.
+
+_Hint: You solved this exercise with base R functions in Lab 3._
+
+```{r, exercise2}
+# Your code goes here.
+
+filter(ba_data, county == "San Francisco" | county == "Oakland") %>% group_by(bedrooms, bathrooms) %>% count() 
+```
+
+
+
+Exercise 3
+----------
+
+Use dplyr to compute the maximum apartment price for each city, and sort your
+results. What are the 3 cities with the highest maximum apartment price?
+
+_Hint: See dplyr's online documentation for examples of how to use the
+`group_by()`, `summarize()`, and `arrange()` functions._
+
+```{r, exercise3}
+# Your code goes here.
+ba_data %>% group_by(city) %>% summarize(max_price = max(price)) %>% arrange(desc(max_price))
+
+```
+
+YOUR WRITTEN ANSWER GOES HERE:
+The cities with the highest max rent are:
+
+Berkeley ||	$16200			
+San Francisco	|| $9500			
+Oakland	|| $8900	
+
+
+Exercise 4
+----------
+
+Compute the median apartment price (ignoring missing values) for each of the
+different parking options. Use each of the three different approaches to the
+split-apply pattern:
+
+1. With `split()` and `sapply()`.
+2. With `tapply()`.
+3. With dplyr's `group_by()` and `summarize()`.
+
+Confirm that the numerical results from each are the same. Describe other
+differences between the results, such as the type and class of the returned
+object.
+
+```{r, exercise5}
+# Your code goes here.
+
+# 1
+d1 = split(ba_data$price, f= ba_data$parking)
+ans1 = sapply(d1, median, na.rm = TRUE)
+ans1
+typeof(ans1)
+class(ans1)
+# 2
+ans2 = tapply(ba_data$price, ba_data$parking, median) 
+ans2
+typeof(ans2)
+class(ans2)
+# 3
+ans3 = ba_data %>% filter(!is.na(parking), !is.na(price)) %>% group_by(parking) %>% summarise(median(price))
+ans3
+typeof(ans3)
+class(ans3)
+```
+
+YOUR WRITTEN ANSWER GOES HERE:
+The first 2 ways return doubles as answers, however using dplyr returns a list.
+The first class using sapply returns a numeric class. The second method returns an array class. Dplyr returns a dataframe. Using tapply was definetly the simplist way to do it.
