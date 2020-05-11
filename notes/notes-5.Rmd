@@ -1,0 +1,447 @@
+---
+title: "Stat 33B - Lecture 7"
+date: March 4, 2020
+output: pdf_document
+---
+
+Announcements
+=============
+
+Due to the coronavirus, I'm considering alternatives to in-person
+lectures/labs and the attendance grade.
+
+Homework 4 will be posted tomorrow.
+
+
+Review
+======
+
+Grocery data set on bCourse:
+```{r}
+stores = readRDS("data/grocery/stores.rds")
+items = readRDS("data/grocery/items.rds")
+inv = readRDS("data/grocery/inventory.rds")
+```
+
+A merge or "join" combines data from two separate data frames, based
+on some identifying values they have in common:
+```{r}
+merge(items, inv)
+```
+
+
+If-statements
+=============
+
+If-statements run some code only if a condition is true.
+
+Three ways to write if-statements in R.
+
+1. Ordinary if-statements
+
+```{r}
+# You have to have the brackets around if and else in exactly the same way
+x = 5
+if(x<5) { message("x is less than 5!") 
+} else { message("this is the else" )}
+# White space doesn't matter in R, so one liner ifs can be on one line or however we want
+
+```
+
+Multiple if-statements can be chained together:
+
+```{r}
+if (){  }
+
+else if () {  }
+
+else {  }
+```
+
+Use `{`, the curly brace, to write multiple line if-statements:
+```{r}
+
+```
+
+If-statements return the value of their last expression:
+
+```{r}
+# Conditional statements return whatever the last thing in the block is
+
+x = 3
+y = if ( x < 4) 42 else 8
+y
+
+# This sets y = 42, or 8 if x >= 4
+```
+
+
+2. The `ifelse()` function is a vectorized if-statement.
+  
+```{r}
+# This type of if returns an error
+x = c(1,2,3)
+if(x<2) {
+  message("x<2")
+}
+
+# The ifelse() function goes through the entire vector
+# This replaces 10 for values >= 2, can be used to change values of a vector through reassignment
+ifelse(x < 2, x, 10)
+x
+```
+
+Avoid `ifelse()` unless you need vectorization. Slower than ordinary
+if-statement.
+
+
+3. The `switch()` function
+
+Matches an integer or string to one of several possible branches.
+
+```{r}
+#how to write swtich statements
+switch(#thing it is testing, #case1, #case2, ...,
+)
+# a real example, R matches the string in x to the cases in the switch statement
+x = "hello"
+
+switch(x, 
+       "hello" = message("You said hello")
+       "hye" = message("You said bye")
+       "33b"  = message("33b")
+       
+# you can have a catchall in the switch statement by not checking whether something is true, ie below
+       message("This is a catch all")
+       )
+# Only strings and integers work in this, integers work based off of position
+x = 2
+switch(x,
+  message("x is 1"),
+  message("x is 2")
+)
+
+# if you use a string as if it were an integer it will throw an error unless there is only one case
+x = "hi"
+switch(x,
+  message("x is 1"),
+  message("x is 2")
+)
+
+#Error: duplicate 'switch' defaults: 'message("x...' and 'message("x...'
+#it things everything is a default
+```
+
+You can also do this with a list:
+
+```{r}
+# if you put something in your list that is very time consuming it will always run
+# if you put a time consuming function in your switch CASES then it won't always run
+mycases  = list(1, 30)
+mycases[[x]]
+```
+
+What's the difference?
+
+
+Loops
+=====
+
+Loops run some code repeatedly.
+
+Four ways to write loops in R:
+
+1. Vectorization (fast!)
+2. Apply functions: `lapply()`, `sapply()`, etc
+3. `for`, `while`, and `repeat` loops
+4. Recursion (slow)
+
+Vectorization
+-------------
+
+A "vectorized" function is one that automatically applies an
+operation to each element of a vector.
+
+We saw this earlier with arithmetic:
+```{r}
+# This is a loop and the fastes way to loop
+sin(c(1, 2, 3))
+```
+
+Apply Functions
+---------------
+
+Similar to "map" functions in other languages.
+
+Applies a function (FUN) to each element of a vector or list (X):
+```
+lapply(X, FUN, ...)
+```
+
+
+`lapply()` always returns the result as a list:
+```{r}
+# applies a function to each element in a list
+# this is good for functions that aren't vectorized, but you want to apply to the entire list/vector
+
+#lapply function lapply(data, function)
+
+#input does NOT have to be a list, but it always returns a list
+mydata = list(1:3, seq(10, 20, 0.5), rnorm(10))
+mydata
+
+lapply(mydata, mean)
+
+# how to remove NA, adding this function is fixed for all iterations. Adding anything extra is applied to everything
+
+lapply(mydata, mean, na.rm = TRUE)
+```
+"l" for **list**.
+
+
+Most apply functions will accept additional arguments to the applied
+function. These arguments are held constant across all elements of
+the data:
+```{r}
+dog = readRDS("/Users/g-mayer/adv_r/lab/lab_1/dogs_full.rds")
+
+# lapply keeps the names of the input
+lapply(dog, class)
+```
+
+
+`sapply()` simplifies the result to a vector, when possible:
+```{r}
+# it might return a list or it might return a vector
+sapply(list, function)
+```
+"s" for **simplified** result.
+
+
+`vapply()` simplifies the result to a vector of a specific type:
+```{r}
+# always returns a vector 
+# vapply(data, function, an example of what will be returned )
+dog = readRDS("/Users/g-mayer/adv_r/lab/lab_1/dogs_full.rds")
+
+vapply(dog, class, '')
+```
+"v" is for **vector** result.
+
+
+
+`mapply()` applies a function to each element of multiple vectors or
+lists:
+```{r}
+# looping over multiple vectors at once
+
+x = c(1,2,3)
+y = 2:4
+
+# the best way to do it, using vectorization
+x + y
+############
+
+# mapply(function, data1, data2)
+mapply(`+`, x, y)
+```
+"m" for **multiple** vectors.
+
+
+### Flashback to Data Analysis
+
+The `split()` function splits a vector or data frame into groups
+based on some other vector.
+
+
+```{r}
+
+```
+
+The `split()` function is especially useful when combined with
+`lapply()` or `sapply`().
+
+```{r}
+
+```
+This is an R idiom!
+
+
+The `tapply()` function is equivalent to the `split()` and `sapply()`
+idiom:
+```{r}
+
+```
+"t" for **table**, because `tapply()` is a generalization of the
+frequency-counting function `table()`.
+
+
+The `split()` and `tapply()` functions are important for analyzing
+data in data frames.
+
+
+### Other Apply Functions
+
+* `apply()` applies a function to rows, columns, or elements of a
+  matrix, and returns a matrix.
+* `eapply()` applies a function to the elements of an environment.
+  We'll learn about environments in a later lecture.
+* `rapply()` applies a function to all elements of a recursive list
+  (a list of lists).
+
+See this StackOverflow Post for a good summary:
+
+    https://stackoverflow.com/a/7141669
+
+
+
+`for`, `while`, and `repeat`
+----------------------
+
+A for-loop runs a block of code once for each element of a vector or
+list:
+```{r}
+
+```
+The same idea as for-loops in other languages.
+
+
+A while-loop runs a block of code repeatedly as long as some
+condition is true:
+```{r}
+
+```
+Again, the same idea as in other languages.
+
+
+Use `break` to exit a loop early:
+```{r}
+
+```
+
+Use `next` to skip to the next iteration early:
+```{r}
+
+```
+
+
+A repeat-loop runs a block of code repeatedly:
+```{r}
+
+```
+
+If you know how many results you expect to get from the loop,
+allocate storage before the loop begins:
+```{r}
+
+```
+
+If you need indices, using `1:length(x)` can cause bugs:
+```{r}
+
+```
+
+Use `seq_along(x)` instead:
+```{r}
+
+```
+
+
+Recursion
+---------
+
+A recursive function is one that calls itself:
+```{r}
+
+```
+
+R's built-in `Recall()` function will re-call the enclosing function:
+```{r}
+
+```
+
+Without `Recall()`, renaming a recursive function can break the
+function:
+```{r}
+
+```
+
+
+How to Write Loops
+------------------
+
+When thinking about writing a loop, try (in order):
+
+1. vectorization
+2. apply functions
+    * Try an apply function if iterations are independent.
+3. for/while-loops
+    * Try a for-loop if some iterations depend on others.
+    * Try a while-loop if the number of iterations is unknown.
+4. recursion
+    * Convenient for naturally recursive problems (like Fibonacci),
+      but often there are faster solutions.
+
+Before you write the loop, try writing the code for just 1 iteration.
+
+Make sure that code works; it's easy to test code for 1 iteration.
+
+When you have 1 iteration working, then try using the code in a loop
+(you will have to make some small changes).
+
+If your loop doesn't work, try to figure out which iteration is
+causing the problem. One way to do this is to use message() to print
+out information.
+
+Then try to write the code for the broken iteration, get that
+iteration working, and repeat this whole process.
+
+
+Functions
+=========
+
+You can write your own function with the `function` command.
+
+Just like any other object in R, you can assign functions to
+variables:
+```{r}
+
+```
+
+To write a function with more than one line of code, use curly braces
+`{ }`.
+
+The last expression in the function is the output:
+```{r}
+
+```
+
+Use `return()` to return a result earlier:
+```{r}
+
+```
+It's idiomatic to only use `return()` when strictly necessary.
+
+
+How to Write Functions
+----------------------
+
+Functions are the building blocks for solving problems.
+
+Take a divide-and-conquer approach, breaking large problems into
+smaller steps.
+
+Use a short function for each step. Then it's easier to:
+
+* Test that each step works correctly.
+* Modify, reuse, or repurpose a step.
+
+Before you write a function, it's useful to go through several steps:
+
+1. Write down what you want to do, in detail. It can also help to
+   draw a picture of what needs to happen.
+
+2. Check whether there's already a built-in function. Google it!
+
+3. Write the code to handle a simple case first. For data science
+   problems, use a small dataset at this step.
